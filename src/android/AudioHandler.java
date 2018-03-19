@@ -151,6 +151,13 @@ public class AudioHandler extends CordovaPlugin {
            } catch (NumberFormatException nfe) {
                //no-op
            }
+        } else if (action.equals("setRate")) {
+            try {
+                float newRate = this.setRate(args.getString(0), Float.parseFloat(args.getString(1)));
+                callbackContext.sendPluginResult(new PluginResult(status, newRate));
+            } catch (NumberFormatException nfe) {
+                //no-op
+            }
         } else if (action.equals("getCurrentPositionAudio")) {
             float f = this.getCurrentPositionAudio(args.getString(0));
             callbackContext.sendPluginResult(new PluginResult(status, f));
@@ -485,6 +492,25 @@ public class AudioHandler extends CordovaPlugin {
         } else {
           LOG.e(TAG3,"Unknown Audio Player " + id);
         }
+    }
+
+    /**
+     * Set the volume for an audio device
+     *
+     * @param id     The id of the audio player
+     * @param volume Volume to adjust to 0.0f - 1.0f
+     */
+    public float setRate(String id, float rate) {
+        String TAG3 = "AudioHandler.setRate(): Error : ";
+
+        AudioPlayer audio = this.players.get(id);
+        if (audio != null) {
+            return audio.setRate(rate);
+        } else {
+            LOG.e(TAG3, "Unknown Audio Player " + id);
+        }
+
+        return 0f;
     }
 
     private void onFirstPlayerCreated() {

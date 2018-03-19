@@ -24,7 +24,9 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.media.MediaRecorder;
+import android.media.PlaybackParams;
 import android.os.Environment;
+import android.os.Build;
 
 import org.apache.cordova.LOG;
 
@@ -540,6 +542,31 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
             sendErrorStatus(MEDIA_ERR_NONE_ACTIVE);
         }
     }
+
+    /**
+     * Set the rate for audio player
+     *
+     * @param rate
+     */
+
+    public float setRate(float rate) {
+        if (this.player != null) {
+              
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                
+                PlaybackParams params = new PlaybackParams();
+                params.setSpeed(rate);
+                player.setPlaybackParams(params);
+                return  mediaPlayer.getPlaybackParams().getSpeed();
+            }
+        } else {
+            LOG.d(LOG_TAG, "AudioPlayer Error: Cannot set volume until the audio file is initialized.");
+            sendErrorStatus(MEDIA_ERR_NONE_ACTIVE);
+        }
+
+        return 0f;
+    }
+
 
     /**
      * attempts to put the player in play mode
