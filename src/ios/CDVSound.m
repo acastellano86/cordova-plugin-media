@@ -317,17 +317,20 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
     if ([self soundCache] != nil) {
         CDVAudioFile* audioFile = [[self soundCache] objectForKey:mediaId];
         if (audioFile != nil) {
-            audioFile.rate = (float) rate;
+            audioFile.rate = rate;
             if (audioFile.player) {
                 audioFile.player.enableRate = YES;
-                audioFile.player.rate = (float) rate;
+                audioFile.player.rate = [rate floatValue];
             }
             if (avPlayer.currentItem && avPlayer.currentItem.asset){
-                float customRate = (float) rate;
+                float customRate = [rate floatValue];
                 [avPlayer setRate:customRate];
             }
 
             [[self soundCache] setObject:audioFile forKey:mediaId];
+
+            CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDouble:audioFile.player.rate];
+            [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
         }
     }
 
