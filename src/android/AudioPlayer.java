@@ -557,7 +557,7 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
                 PlaybackParams params = new PlaybackParams();
                 params.setSpeed(rate);
                 player.setPlaybackParams(params);
-                return  mediaPlayer.getPlaybackParams().getSpeed();
+                return  player.getPlaybackParams().getSpeed();
             }
         } else {
             LOG.d(LOG_TAG, "AudioPlayer Error: Cannot set volume until the audio file is initialized.");
