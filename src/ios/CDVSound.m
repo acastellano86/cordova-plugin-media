@@ -317,13 +317,13 @@ BOOL keepAvAudioSessionAlwaysActive = NO;
     if ([self soundCache] != nil) {
         CDVAudioFile* audioFile = [[self soundCache] objectForKey:mediaId];
         if (audioFile != nil) {
-            audioFile.rate = rate;
+            audioFile.rate = (float) rate;
             if (audioFile.player) {
                 audioFile.player.enableRate = YES;
-                audioFile.player.rate = [rate floatValue];
+                audioFile.player.rate = (float) rate;
             }
             if (avPlayer.currentItem && avPlayer.currentItem.asset){
-                float customRate = [rate floatValue];
+                float customRate = (float) rate;
                 [avPlayer setRate:customRate];
             }
 
